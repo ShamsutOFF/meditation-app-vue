@@ -1,0 +1,12 @@
+:root{
+  --color-bg-main: #253334;
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+  --color-text-secondary: #FFFFFF80;
+  --card-bg: #F7F3F0;
+}
+
+body{
+  background-color: var(--color-bg-main);
+  font-family: "Alegreya", serif;
+}
