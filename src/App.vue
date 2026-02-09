@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import MeditationsCardsList from '@/components/MeditationsCardsList.vue';
+</script>
 
 <template>
-  <div>Готово</div>
+  <MeditationsCardsList />
 </template>
 
 <style scoped></style>
