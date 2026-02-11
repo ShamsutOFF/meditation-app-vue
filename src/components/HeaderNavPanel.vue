@@ -16,11 +16,13 @@ import ExitIcon from '@/icons/ExitIcon.vue';
         text="Медитация"
         to="/"
       />
+      <div class="nav-divider" />
       <NavTab
         :icon="StatIcon"
         text="Статистика"
         to="/"
       />
+      <div class="nav-divider" />
       <NavTab
         :icon="ExitIcon"
         text="Выход"
@@ -40,7 +42,13 @@ import ExitIcon from '@/icons/ExitIcon.vue';
 
 .nav-panel {
   display: flex;
-  gap: 16px;
+  gap: 60px;
   align-items: center;
+}
+.nav-divider {
+  width: 3px;
+  height: 92px;
+  background-color: #3A5051;
+  align-self: center;
 }
 </style>

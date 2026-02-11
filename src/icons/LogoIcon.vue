@@ -4,7 +4,7 @@
   <svg
     width="250"
     height="250"
-    viewBox="0 0 250 250"
+    viewBox="50 -20 250 250"
     fill="none"
     style="overflow: visible"
     xmlns="http://www.w3.org/2000/svg"

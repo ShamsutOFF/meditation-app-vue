@@ -21,9 +21,10 @@ onMounted(() => {
 
 <style scoped>
 .meditation-list {
-  display: inline-grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, max-content)); /* Вместо 1fr */
   column-gap: 22px;
   row-gap: 24px;
+  justify-content: start; /* Прижимаем к левому краю */
 }
 </style>
