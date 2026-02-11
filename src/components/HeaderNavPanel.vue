@@ -14,13 +14,13 @@ import ExitIcon from '@/icons/ExitIcon.vue';
       <NavTab
         :icon="RunMeditationIcon"
         text="Медитация"
-        to="/"
+        to="home"
       />
       <div class="nav-divider" />
       <NavTab
         :icon="StatIcon"
         text="Статистика"
-        to="/"
+        to="stat"
       />
       <div class="nav-divider" />
       <NavTab
