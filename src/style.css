@@ -1,13 +1,61 @@
-:root{
+:root {
   --color-bg-main: #253334;
   --color-bg-main-dark: #202728;
   --color-card-bg: #F7F3F0;
   --color-white: #FFFFFF;
   --color-black: #000000;
   --color-text-secondary: #FFFFFF80;
+  --color-button-bg: #7C9A92;
+  --color-button-hover: #7C9A9280;
+  --color-input-placeholder: #BEC2C2;
 }
 
-body{
+/* Сброс стилей для всех элементов */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
   background-color: var(--color-bg-main);
   font-family: "Alegreya", serif;
+  min-height: 100vh; /* Чтобы фон занимал всю высоту */
+  line-height: 1.5; /* Улучшает читаемость */
+  -webkit-font-smoothing: antialiased; /* Сглаживание шрифтов */
+}
+
+/* Убираем лишние отступы у списков */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Убираем подчеркивание у ссылок */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Убираем стандартные стили кнопок */
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit; /* Наследуем шрифт */
+}
+
+/* Убираем стандартные стили для полей ввода */
+input {
+  font-family: inherit;
+  border: none;
+  outline: none;
+}
+
+/* Для изображений */
+img {
+  max-width: 100%;
+  display: block;
 }
