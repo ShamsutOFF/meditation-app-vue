@@ -6,22 +6,38 @@ import type { Component } from 'vue';
 interface Props {
   icon: Component;
   text: string;
-  to: string;
+  to?: string; // Делаем опциональным
 }
 
 const props = defineProps<Props>();
 const route = useRoute();
 
-const isActive = computed(() => route.path === props.to);
+const isActive = computed(() => props.to ? route.name === props.to : false);
 </script>
 
 <template>
-  <RouterLink :to="props.to" active-class="router-link-active" class="nav-tab">
+  <!-- Если есть to - используем RouterLink, иначе - обычный div -->
+  <RouterLink
+    v-if="props.to"
+    :to="{ name: props.to }"
+    active-class="router-link-active"
+    class="nav-tab"
+  >
     <div class="nav-tab__icon">
       <component :is="props.icon" :is-active="isActive" />
     </div>
     <span class="nav-tab__text">{{ props.text }}</span>
   </RouterLink>
+
+  <div
+    v-else
+    class="nav-tab nav-tab--clickable"
+  >
+    <div class="nav-tab__icon">
+      <component :is="props.icon" :is-active="false" />
+    </div>
+    <span class="nav-tab__text">{{ props.text }}</span>
+  </div>
 </template>
 
 <style scoped>
@@ -36,11 +52,12 @@ const isActive = computed(() => route.path === props.to);
   border-radius: 8px;
 }
 
-.nav-tab:hover .nav-tab__text {
-  opacity: 1;
+.nav-tab--clickable {
+  cursor: pointer;
 }
 
-.nav-tab--active {
+.nav-tab:hover .nav-tab__text {
+  opacity: 1;
 }
 
 .nav-tab__icon {
@@ -55,11 +72,7 @@ const isActive = computed(() => route.path === props.to);
   opacity: 0.5;
 }
 
-/* Стили для активной ссылки через классы vue-router */
-.nav-tab.router-link-active {
-}
-
-.nav-tab.router-link-exact-active {
-  /* Стили для точного совпадения маршрута */
+.nav-tab.router-link-active .nav-tab__text {
+  opacity: 1;
 }
 </style>
