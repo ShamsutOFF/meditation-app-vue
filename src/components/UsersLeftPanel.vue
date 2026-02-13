@@ -5,6 +5,7 @@ import AnxiousIcon from '@/icons/AnxiousIcon.vue';
 import FocusIcon from '@/icons/FocusIcon.vue';
 import RelaxIcon from '@/icons/RelaxIcon.vue';
 import { useUserStore, type FeelingType } from '@/stores/user.store';
+import { onMounted, computed } from 'vue';
 
 const userStore = useUserStore();
 
@@ -24,12 +25,22 @@ const feelings: Feeling[] = [
 const selectFeeling = (feeling: FeelingType) => {
   userStore.setFeeling(feeling);
 };
+
+const displayName = computed(() => {
+  return userStore.profile?.username || 'Пользователь';
+});
+
+onMounted(async () => {
+  if (!userStore.profile) {
+    await userStore.fetchProfile();
+  }
+});
 </script>
 
 <template>
   <div class="users-panel-wrapper">
     <img class="users-panel-avatar" src="/user-avatar.png" alt="Аватарка пользователя" />
-    <div class="users-panel-name">Добро пожаловать, Наталья!</div>
+    <div class="users-panel-name">Добро пожаловать, {{ displayName }}!</div>
     <div class="users-panel-question">Как вы сегодня себя чувствуете?</div>
 
     <div class="users-panel-feelings">
@@ -46,6 +57,7 @@ const selectFeeling = (feeling: FeelingType) => {
 </template>
 
 <style scoped>
+/* стили остаются без изменений */
 .users-panel-wrapper {
   display: flex;
   flex-direction: column;
