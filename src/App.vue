@@ -1,9 +1,7 @@
-<script setup lang="ts">
-import MeditationsCardsList from '@/components/MeditationsCardsList.vue';
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <MeditationsCardsList />
+  <RouterView />
 </template>
 
 <style scoped></style>
