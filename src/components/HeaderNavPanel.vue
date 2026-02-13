@@ -6,16 +6,19 @@ import RunMeditationIcon from '@/icons/RunMeditationIcon.vue';
 import ExitIcon from '@/icons/ExitIcon.vue';
 import { useAuthStore } from '@/stores/auth.store.ts';
 import { useUserStore } from '@/stores/user.store.ts';
+import { useStatsStore } from '@/stores/stats.store.ts';
 import { useRouter } from 'vue-router';
 
 const authStore = useAuthStore();
 const userStore = useUserStore();
+const statsStore = useStatsStore();
 const router = useRouter();
 
 function logout() {
   authStore.clearToken();
   userStore.clearProfile();
   userStore.clearFeeling();
+  statsStore.clearStats();
   router.push({ name: 'auth' });
 }
 </script>

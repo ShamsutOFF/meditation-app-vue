@@ -22,8 +22,10 @@ const feelings: Feeling[] = [
   { id: 'anxious', icon: AnxiousIcon, text: 'Тревожно' },
 ];
 
-const selectFeeling = (feeling: FeelingType) => {
-  userStore.setFeeling(feeling);
+const selectFeeling = async (feeling: FeelingType) => {
+  if (!userStore.isSavingFeeling) {
+    await userStore.setFeeling(feeling);
+  }
 };
 
 const displayName = computed(() => {
@@ -50,6 +52,7 @@ onMounted(async () => {
         :icon="feeling.icon"
         :text="feeling.text"
         :selected="userStore.selectedFeeling === feeling.id"
+        :disabled="userStore.isSavingFeeling"
         @click="selectFeeling(feeling.id)"
       />
     </div>
@@ -57,7 +60,6 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-/* стили остаются без изменений */
 .users-panel-wrapper {
   display: flex;
   flex-direction: column;
