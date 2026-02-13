@@ -1,11 +1,12 @@
 <script setup lang="ts">
 defineProps<{
-  type?: string;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
 }>();
 </script>
 
 <template>
-  <button class="button" :type="type || 'button'">
+  <button class="button" :type="type || 'button'" :disabled="disabled">
     <slot />
   </button>
 </template>
@@ -19,15 +20,22 @@ defineProps<{
   cursor: pointer;
   border-radius: 10px;
   height: 60px;
-  padding: 0 54px; /* Убрал вертикальные padding, добавил горизонтальные */
+  padding: 0 54px;
   border: none;
   color: var(--color-white);
   font-size: 25px;
-  width: 100%; /* Кнопка на всю ширину контейнера */
-  white-space: nowrap; /* Текст в одну строку */
+  width: 100%;
+  white-space: nowrap;
+  transition: background-color 0.2s ease; /* Изменили здесь */
 }
 
-.button:hover {
-  background: var(--color-button-hover);
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button:hover:not(:disabled) {
+  background-color: var(--color-button-hover);
 }
 </style>
+

@@ -2,9 +2,10 @@
 defineProps<{
   placeholder?: string;
   type?: string;
+  disabled?: boolean;
 }>();
 
-const data = defineModel<string>();
+const data = defineModel<string>({ required: false }); // Добавьте required: false
 </script>
 
 <template>
@@ -13,6 +14,7 @@ const data = defineModel<string>();
     v-model="data"
     :type="type || 'text'"
     :placeholder="placeholder"
+    :disabled="disabled"
   />
 </template>
 
@@ -24,17 +26,32 @@ const data = defineModel<string>();
   color: var(--color-white);
   font-size: 24px;
   width: 100%;
-  padding: 0 0 10px 0; /* Отступ снизу 10px */
-  outline: none; /* Убирает рамку при фокусе */
+  padding: 0 0 10px 0;
+  outline: none;
+}
+
+.input-string:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .input-string::placeholder {
   color: var(--color-input-placeholder);
 }
 
-/* Убираем стандартную подсветку при фокусе */
 .input-string:focus {
   outline: none;
-  border-bottom: 1px solid var(--color-white); /* Сохраняем тот же стиль */
+  border-bottom: 1px solid var(--color-white);
+}
+
+/* Стили для автозаполнения */
+.input-string:-webkit-autofill,
+.input-string:-webkit-autofill:hover,
+.input-string:-webkit-autofill:focus,
+.input-string:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+  -webkit-text-fill-color: var(--color-white) !important;
+  transition: background-color 5000s ease-in-out 0s;
+  border-bottom: 1px solid var(--color-white) !important;
 }
 </style>

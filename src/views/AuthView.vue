@@ -8,6 +8,7 @@ import LogoBigIcon from '@/icons/LogoBigIcon.vue';
 
 const authStore = useAuthStore();
 const router = useRouter();
+const isLoading = ref(false);
 
 // Режимы страницы
 type AuthMode = 'login' | 'register';
@@ -24,7 +25,12 @@ const form = ref<{
 // Переключение режимов
 const toggleMode = () => {
   mode.value = mode.value === 'login' ? 'register' : 'login';
-  form.value = {}; // Очищаем форму
+  form.value = {
+    username: undefined,
+    email: undefined,
+    password: undefined,
+    confirmPassword: undefined
+  };
 };
 
 // Заголовок кнопки
@@ -52,31 +58,39 @@ const isFormValid = computed(() => {
   }
 });
 
-watch(
-  () => authStore.getToken,
-  () => {
-    if (authStore.getToken) {
-      router.push({ name: 'main' });
-    }
-  },
-);
-
-function onSubmit(event: Event) {
+async function onSubmit(event: Event) {
   event.preventDefault();
 
-  if (!isFormValid.value) return;
+  if (!isFormValid.value || isLoading.value) return;
 
-  if (mode.value === 'login') {
-    authStore.login(form.value.username!, form.value.password!);
-  } else {
-    authStore.register({
-      username: form.value.username!,
-      email: form.value.email!,
-      password: form.value.password!
-    });
+  isLoading.value = true;
+
+  try {
+    if (mode.value === 'login') {
+      const success = await authStore.login(form.value.username!, form.value.password!);
+
+      if (success) {
+        // Редирект сразу после успешного логина
+        await router.push({ name: 'home' });
+      } else {
+        // Очистка пароля при ошибке
+        form.value.password = undefined;
+      }
+    } else {
+      const success = await authStore.register({
+        username: form.value.username!,
+        email: form.value.email!,
+        password: form.value.password!
+      });
+
+      if (success) {
+        mode.value = 'login';
+        form.value = {};
+      }
+    }
+  } finally {
+    isLoading.value = false;
   }
-
-  form.value = {};
 }
 </script>
 
@@ -90,6 +104,7 @@ function onSubmit(event: Event) {
           v-model="form.username"
           placeholder="Имя пользователя"
           type="text"
+          :disabled="isLoading"
         />
 
         <InputString
@@ -97,12 +112,14 @@ function onSubmit(event: Event) {
           v-model="form.email"
           placeholder="Email"
           type="email"
+          :disabled="isLoading"
         />
 
         <InputString
           v-model="form.password"
           placeholder="Пароль"
           type="password"
+          :disabled="isLoading"
         />
 
         <InputString
@@ -110,14 +127,22 @@ function onSubmit(event: Event) {
           v-model="form.confirmPassword"
           placeholder="Подтвердите пароль"
           type="password"
+          :disabled="isLoading"
         />
 
-        <ButtonText type="submit" :disabled="!isFormValid">
+        <ButtonText
+          type="submit"
+          :disabled="!isFormValid || isLoading"
+        >
           {{ buttonText }}
         </ButtonText>
       </form>
 
-      <button class="auth__link" @click="toggleMode">
+      <button
+        class="auth__link"
+        @click="toggleMode"
+        :disabled="isLoading"
+      >
         {{ linkText }}
       </button>
     </div>
@@ -142,8 +167,13 @@ function onSubmit(event: Event) {
   gap: 16px;
   width: 100%;
   max-width: 400px; /* Ограничиваем ширину контейнера */
-  padding: 0 20px; /* Отступы по бокам на мобилках */
-  padding-bottom: 40px;
+  /* Отступы по бокам на мобилках */
+  padding: 0 20px 40px;
+}
+
+.auth__link:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
 
 .auth__form {
@@ -151,8 +181,8 @@ function onSubmit(event: Event) {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 32px; /* Уменьшил gap для лучшего восприятия */
-  width: 100%; /* Форма на всю ширину контейнера */
+  gap: 32px;
+  width: 100%;
 }
 
 .auth__link {
