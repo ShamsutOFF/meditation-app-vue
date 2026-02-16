@@ -1,10 +1,20 @@
 <script setup lang="ts">
 import StartIcon from '@/icons/StartIcon.vue';
 import type { IMeditation } from '@/interfaces/IMeditation.ts';
+import { useRouter } from 'vue-router';
 
 const props = defineProps<{
   meditation: IMeditation;
 }>();
+
+const router = useRouter();
+
+const startMeditation = () => {
+  router.push({
+    name: 'meditation',
+    params: { id: props.meditation.id },
+  });
+};
 </script>
 
 <template>
@@ -13,7 +23,7 @@ const props = defineProps<{
     <div class="meditation-card__description">{{ props.meditation.description }}</div>
     <div>
       <div class="start-button-wrapper">
-        <button class="start-button">
+        <button class="start-button" @click="startMeditation">
           <span class="start-button__text">Начать</span>
           <StartIcon class="start-button__icon" />
         </button>

@@ -24,6 +24,12 @@ export const router = createRouter({
       name: 'stat',
       component: () => import('@/views/StatView.vue'),
     },
+    {
+      path: '/meditation/:id',
+      name: 'meditation',
+      component: () => import('@/views/MeditationView.vue'),
+      props: true,
+    },
   ],
 });
 
